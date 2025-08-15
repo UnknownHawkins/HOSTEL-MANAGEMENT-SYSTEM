@@ -1,0 +1,684 @@
+/* Import Poppins font for a modern look */
+@import url('[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)');
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #CCE0F0 0%, #A0C0D0 100%); /* Light icy blue gradient */
+    color: #333; /* Darker text color for contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+/* General spacing utility */
+.mt-3 {
+    margin-top: 1.5rem; /* Equivalent to Bootstrap's mt-3 */
+}
+.mb-4 {
+    margin-bottom: 2rem; /* Equivalent to Bootstrap's mb-4 */
+}
+
+/* App Container for overall styling */
+.app-container {
+    background: #E0F0FA; /* Lighter icy blue background */
+    border-radius: 1.5rem;
+    box-shadow: 0 0 40px rgba(0, 50, 100, 0.2); /* Subtle blue shadow */
+    width: 100%;
+    max-width: 1200px; /* Max width for larger screens */
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ensure rounded corners are respected */
+}
+
+/* Page Management */
+.page {
+    display: none; /* Hide all pages by default */
+    width: 100%;
+    flex-grow: 1; /* Allow pages to fill available space */
+}
+
+.page.active {
+    display: flex; /* Show active page */
+    flex-direction: column;
+}
+
+/* Card Style for Login/Registration/Profile Setup */
+.card {
+    background: linear-gradient(120deg, #ADD8E6 60%, #E0F0FA 100%); /* Soft blue gradient */
+    padding: 4rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    text-align: center;
+    max-width: 450px; /* Slightly wider for new forms */
+    width: 100%;
+    margin: auto; /* Center the card */
+    min-height: 50vh; /* Ensure cards are visible */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+}
+
+
+/* Login Page Styles */
+.login-page, .registration-page, .student-profile-setup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+}
+
+.login-card { /* Kept for backward compatibility, but .card is preferred for new pages */
+    background: linear-gradient(120deg, #ADD8E6 60%, #E0F0FA 100%); /* Soft blue gradient */
+    padding: 4rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-card h2, .card h2 {
+    font-size: 3.2rem;
+    color: #2F80ED; /* Deep blue accent */
+    margin-bottom: 3rem;
+    font-weight: 700;
+}
+
+.input-group {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 1.6rem;
+    color: #555; /* Medium grey */
+    margin-bottom: 0.8rem;
+}
+
+.input-group input, .input-group select, .input-group textarea {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid #99BBCC; /* Light blue-grey border */
+    border-radius: 0.8rem;
+    background-color: #F8F8F8; /* Nearly white input background */
+    color: #333;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+    resize: vertical; /* Allow vertical resizing for textareas */
+}
+
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+    border-color: #2F80ED; /* Deep blue on focus */
+    box-shadow: 0 0 12px rgba(47, 128, 237, 0.3);
+    outline: none;
+}
+.input-group textarea {
+    min-height: 80px;
+}
+
+.login-card .btn, .card .btn {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+}
+
+.hint {
+    font-size: 1.3rem;
+    color: #777;
+    margin-top: 2rem;
+}
+
+/* General Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    border-radius: 4rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: 2px solid transparent;
+}
+
+.btn i {
+    margin-right: 0.8rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn {
+    background-color: #2F80ED; /* Deep blue */
+    color: #FFFFFF; /* White text */
+    border-color: #2F80ED;
+}
+
+.primary-btn:hover {
+    background-color: #56CCF2; /* Lighter blue */
+    border-color: #56CCF2;
+    color: #333;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: #2F80ED;
+    border-color: #2F80ED;
+}
+.secondary-btn:hover {
+    background-color: #E6F2F8;
+    color: #2F80ED;
+    border-color: #E6F2F8;
+}
+
+.success-btn {
+    background-color: #27AE60; /* Emerald green */
+    color: #FFFFFF;
+    border-color: #27AE60;
+}
+
+.success-btn:hover {
+    background-color: #6FCF97; /* Lighter green */
+    border-color: #6FCF97;
+    color: #333;
+}
+
+.danger-btn {
+    background-color: #EB5757; /* Fiery red */
+    color: #FFFFFF;
+    border-color: #EB5757;
+}
+
+.danger-btn:hover {
+    background-color: #F2994A; /* Orange-red */
+    border-color: #F2994A;
+    color: #333;
+}
+
+.warning-btn {
+    background-color: #F2C94C; /* Sunny yellow */
+    color: #333;
+    border-color: #F2C94C;
+}
+
+.warning-btn:hover {
+    background-color: #F8D66F; /* Lighter yellow */
+    border-color: #F8D66F;
+    color: #333;
+}
+
+.info-btn {
+    background-color: #BB6BD9; /* Soft purple */
+    color: #FFFFFF;
+    border-color: #BB6BD9;
+}
+
+.info-btn:hover {
+    background-color: #D9B8F5; /* Lighter purple */
+    border-color: #D9B8F5;
+    color: #333;
+}
+
+/* Dashboard Header & Navigation */
+.dashboard-header {
+    background: linear-gradient(90deg, #A0C0D0 0%, #CCE0F0 100%); /* Icy blue gradient */
+    padding: 1.5rem 3rem;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 2px solid rgba(47, 128, 237, 0.3); /* Subtle blue border */
+}
+
+.dashboard-header h2 {
+    font-size: 2.8rem;
+    color: #2F80ED; /* Deep blue */
+    font-weight: 600;
+}
+
+.dashboard-header h2 span {
+    font-size: 2rem;
+    color: #555; /* Medium grey */
+}
+
+.dashboard-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-nav .nav-item {
+    background: transparent;
+    color: #555;
+    border: 1px solid #99BBCC; /* Light blue-grey border */
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.8rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dashboard-nav .nav-item:hover,
+.dashboard-nav .nav-item.active {
+    background-color: #2F80ED; /* Deep blue */
+    color: #FFFFFF; /* White text */
+    border-color: #2F80ED;
+    box-shadow: 0 2px 10px rgba(47, 128, 237, 0.4);
+}
+
+/* Dashboard Content & Tabs */
+.dashboard-content {
+    padding: 2rem 3rem;
+    flex-grow: 1;
+    overflow-y: auto; /* Enable scrolling for content if needed */
+}
+
+.tab-content {
+    display: none; /* Hide all tabs by default */
+    background-color: #F8F8F8; /* Light background for tab content */
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    min-height: 400px; /* Ensure content area is visible */
+}
+
+.tab-content.active {
+    display: block; /* Show active tab content */
+}
+
+.tab-content h3 {
+    font-size: 2.4rem;
+    color: #2F80ED; /* Deep blue */
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(47, 128, 237, 0.2);
+    padding-bottom: 1rem;
+}
+
+/* Action Buttons within Tabs */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    justify-content: flex-start;
+}
+
+/* Data Table Styling (mimicking ttk.Treeview) */
+.data-table {
+    background-color: #FFFFFF; /* White background for table */
+    border-radius: 0.8rem;
+    overflow: hidden;
+    border: 1px solid #DDDDDD; /* Light grey border */
+}
+
+.table-header {
+    display: flex;
+    background-color: #E6F2F8; /* Very light blue for header */
+    padding: 1.2rem 2rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #2F80ED; /* Deep blue for header text */
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.table-header span,
+.table-row span {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if text overflows */
+}
+/* Adjusting column widths for student table for more fields */
+#warden-students .table-header span:nth-child(1),
+#warden-students .table-row span:nth-child(1) { flex: 0.8; } /* Username */
+#warden-students .table-header span:nth-child(2),
+#warden-students .table-row span:nth-child(2) { flex: 1.2; } /* Name */
+#warden-students .table-header span:nth-child(3),
+#warden-students .table-row span:nth-child(3) { flex: 0.6; } /* Roll */
+#warden-students .table-header span:nth-child(4),
+#warden-students .table-row span:nth-child(4) { flex: 0.6; } /* Room */
+#warden-students .table-header span:nth-child(5),
+#warden-students .table-row span:nth-child(5) { flex: 1.2; } /* Contact */
+#warden-students .table-header span:nth-child(6),
+#warden-students .table-row span:nth-child(6) { flex: 1.5; } /* Email */
+#warden-students .table-header span:nth-child(7),
+#warden-students .table-row span:nth-child(7) { flex: 1.2; } /* Parent Phone */
+#warden-students .table-header span:nth-child(8),
+#warden-students .table-row span:nth-child(8) { flex: 2; text-align: left; } /* Address */
+
+
+.table-row {
+    display: flex;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid #EEEEEE; /* Even lighter border */
+    transition: background-color 0.2s ease;
+    color: #444; /* Darker text for table rows */
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-row:nth-child(even) {
+    background-color: #F8F8F8; /* Alternate row color */
+}
+
+.table-row.selected, /* Highlight selected row */
+.table-row:hover {
+    background-color: #E6F2F8; /* Hover effect */
+    cursor: pointer;
+}
+
+
+/* List Box Styling (for pending leaves, student leaves) */
+.list-box {
+    background-color: #FFFFFF;
+    border-radius: 0.8rem;
+    border: 1px solid #DDDDDD;
+    margin-bottom: 2.5rem;
+    max-height: 250px; /* Constrain height */
+    overflow-y: auto; /* Enable scrolling */
+}
+
+.list-item {
+    padding: 1.2rem 2rem;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #EEEEEE;
+    transition: background-color 0.2s ease;
+    color: #444;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item:nth-child(even) {
+    background-color: #F8F8F8;
+}
+
+.list-item.selected, /* Highlight selected item */
+.list-item:hover {
+    background-color: #E6F2F8;
+    cursor: pointer;
+}
+
+/* Profile Details Styling */
+.profile-details p {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.profile-details p strong {
+    color: #2F80ED;
+    margin-right: 0.5rem;
+}
+
+/* Status Badges */
+.status {
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 1.3rem;
+    display: inline-block;
+    min-width: 80px; /* Ensure consistent width */
+    text-align: center;
+}
+
+.status.pending {
+    background-color: rgba(242, 201, 76, 0.2); /* Light yellow with transparency */
+    color: #F2C94C;
+    border: 1px solid #F2C94C;
+}
+
+.status.approved {
+    background-color: rgba(39, 174, 96, 0.2); /* Light green with transparency */
+    color: #27AE60;
+    border: 1px solid #27AE60;
+}
+
+.status.rejected {
+    background-color: rgba(235, 87, 87, 0.2); /* Light red with transparency */
+    color: #EB5757;
+    border: 1px solid #EB5757;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex; /* Show when active */
+}
+
+.modal-content {
+    background: linear-gradient(120deg, #ADD8E6 60%, #E0F0FA 100%); /* Soft blue gradient */
+    margin: auto;
+    padding: 3rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 600px; /* Max width for modals */
+    animation: fadeIn 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content h3 {
+    font-size: 2.8rem;
+    color: #2F80ED;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(47, 128, 237, 0.2);
+    padding-bottom: 1rem;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+.modal-buttons .btn {
+    min-width: 120px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    html {
+        font-size: 55%; /* Adjust base font size for smaller screens */
+    }
+
+    .app-container {
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+
+    .login-card, .card {
+        padding: 3rem 2rem;
+    }
+
+    .login-card h2, .card h2 {
+        font-size: 2.8rem;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 2rem;
+    }
+
+    .dashboard-header h2 {
+        font-size: 2.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-nav {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .dashboard-nav .nav-item {
+        flex: 1 1 auto; /* Allow items to grow/shrink */
+        text-align: center;
+        margin: 0.5rem 0.5rem;
+    }
+
+    .dashboard-content {
+        padding: 1.5rem 2rem;
+    }
+
+    .tab-content {
+        padding: 2rem;
+    }
+
+    .tab-content h3 {
+        font-size: 2rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .data-table {
+        overflow-x: auto; /* Enable horizontal scroll for tables on small screens */
+    }
+
+    .table-header,
+    .table-row {
+        min-width: 700px; /* Ensure table content doesn't completely collapse */
+        flex-wrap: nowrap; /* Keep items in one line to allow scrolling */
+        padding: 1rem 1.5rem;
+        font-size: 1.3rem;
+    }
+
+    .table-header span,
+    .table-row span {
+        flex: 1; /* Reset flex-basis for table cells on mobile, let min-width handle it */
+        min-width: 80px; /* Default minimum width for columns */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* Specific width adjustments for smaller screens */
+    #warden-students .table-header span:nth-child(1), #warden-students .table-row span:nth-child(1) { min-width: 90px; } /* Username */
+    #warden-students .table-header span:nth-child(2), #warden-students .table-row span:nth-child(2) { min-width: 120px; } /* Name */
+    #warden-students .table-header span:nth-child(6), #warden-students .table-row span:nth-child(6) { min-width: 150px; } /* Email */
+    #warden-students .table-header span:nth-child(8), #warden-students .table-row span:nth-child(8) { min-width: 200px; } /* Address */
+
+
+    .list-item {
+        font-size: 1.4rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-content {
+        padding: 2rem;
+    }
+    .modal-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1rem;
+    }
+
+    .app-container {
+        min-height: 95vh;
+    }
+
+    .login-card, .card {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .login-card h2, .card h2 {
+        font-size: 2.4rem;
+    }
+
+    .input-group input, .input-group select, .input-group textarea {
+        font-size: 1.6rem;
+        padding: 1.2rem;
+    }
+
+    .btn {
+        font-size: 1.8rem;
+        padding: 1.2rem 2rem;
+    }
+
+    .dashboard-header h2 {
+        font-size: 2rem;
+    }
+
+    .dashboard-nav .nav-item {
+        font-size: 1.3rem;
+        padding: 0.7rem 1rem;
+    }
+
+    .dashboard-content {
+        padding: 1rem 1.5rem;
+    }
+
+    .tab-content {
+        padding: 1.5rem;
+    }
+
+    .tab-content h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-details p {
+        font-size: 1.6rem;
+    }
+}

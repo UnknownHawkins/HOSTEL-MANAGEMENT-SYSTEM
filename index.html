@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Application Container -->
+    <div class="app-container">
+        <!-- Login Page (Default View) -->
+        <div id="login-page" class="page active">
+            <div class="login-card">
+                <h2>Hostel System Login</h2>
+                <div class="input-group">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" placeholder="Enter username">
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" placeholder="Enter password">
+                </div>
+                <button class="btn primary-btn" onclick="simulateLogin()">Login</button>
+                <button class="btn secondary-btn mt-3" onclick="showRegistrationPage()">Register New User</button>
+                <!-- Removed the default credentials hint -->
+            </div>
+        </div>
+
+        <!-- Registration Page (Hidden by default) -->
+        <div id="registration-page" class="page">
+            <div class="card">
+                <h2>Register New Account</h2>
+                <div class="input-group">
+                    <label for="reg-username">Choose Username:</label>
+                    <input type="text" id="reg-username" placeholder="Enter desired username">
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Choose Password:</label>
+                    <input type="password" id="reg-password" placeholder="Set your password">
+                </div>
+                <div class="input-group">
+                    <label for="reg-role">Account Type:</label>
+                    <select id="reg-role">
+                        <option value="student">Student</option>
+                        <option value="warden">Warden</option>
+                    </select>
+                </div>
+                <button class="btn primary-btn" onclick="simulateRegister()">Register</button>
+                <button class="btn secondary-btn mt-3" onclick="showLoginPage()">Back to Login</button>
+            </div>
+        </div>
+
+        <!-- Student First Login Profile Setup (Hidden by default) -->
+        <div id="student-profile-setup-page" class="page">
+            <div class="card">
+                <h2>Complete Your Student Profile</h2>
+                <p class="mb-4 text-center">Please fill in your details to get started.</p>
+                <div class="input-group">
+                    <label for="setup-name">Full Name:</label>
+                    <input type="text" id="setup-name" placeholder="Your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-roll">Roll Number:</label>
+                    <input type="text" id="setup-roll" placeholder="Your roll number" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-room">Room Number:</label>
+                    <input type="text" id="setup-room" placeholder="Assigned room number" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-gmail">Email (Gmail):</label>
+                    <input type="email" id="setup-gmail" placeholder="Your Gmail address" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-phone">Your Phone Number:</label>
+                    <input type="tel" id="setup-phone" placeholder="Your contact number" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-parent-phone">Parent's Phone Number:</label>
+                    <input type="tel" id="setup-parent-phone" placeholder="Parent's contact number" required>
+                </div>
+                <div class="input-group">
+                    <label for="setup-address">Address:</label>
+                    <textarea id="setup-address" placeholder="Your full residential address" rows="3" required></textarea>
+                </div>
+                <button class="btn primary-btn" onclick="simulateProfileSetup()">Save Profile</button>
+            </div>
+        </div>
+
+        <!-- Warden Dashboard (Hidden by default) -->
+        <div id="warden-dashboard" class="page">
+            <header class="dashboard-header">
+                <h2>Warden Dashboard <span id="warden-username"></span></h2>
+                <nav class="dashboard-nav">
+                    <button class="nav-item active" data-target="warden-students">Students</button>
+                    <button class="nav-item" data-target="warden-leaves">Leaves</button>
+                    <button class="nav-item" data-target="warden-mess">Mess Payments</button>
+                    <button class="nav-item" onclick="simulateLogout()">Logout</button>
+                </nav>
+            </header>
+            <div class="dashboard-content">
+                <!-- Warden Students Tab -->
+                <div id="warden-students" class="tab-content active">
+                    <h3>Students List</h3>
+                    <div class="action-buttons">
+                        <button class="btn success-btn" onclick="showAddStudentModal()"><i class="fas fa-plus"></i> Add Student</button>
+                        <button class="btn warning-btn" onclick="showEditStudentModal()"><i class="fas fa-edit"></i> Edit Selected</button>
+                        <button class="btn danger-btn" onclick="simulateDeleteStudent()"><i class="fas fa-trash"></i> Delete Selected</button>
+                        <button class="btn info-btn"><i class="fas fa-file-export"></i> Export CSV</button>
+                    </div>
+                    <div class="data-table">
+                        <!-- Table header -->
+                        <div class="table-header">
+                            <span>Username</span>
+                            <span>Name</span>
+                            <span>Roll</span>
+                            <span>Room</span>
+                            <span>Contact</span>
+                            <span>Email</span>
+                            <span>Parent Phone</span>
+                            <span>Address</span>
+                        </div>
+                        <!-- Sample student rows (replace with dynamic data from backend) -->
+                        <div class="table-row" data-username="student1">
+                            <span>student1</span>
+                            <span>Student One</span>
+                            <span>101</span>
+                            <span>A1</span>
+                            <span>9876543210</span>
+                            <span>student1@gmail.com</span>
+                            <span>1234567890</span>
+                            <span>123 Hostel St, City</span>
+                        </div>
+                        <div class="table-row" data-username="student2">
+                            <span>student2</span>
+                            <span>Jane Doe</span>
+                            <span>102</span>
+                            <span>B2</span>
+                            <span>9876543211</span>
+                            <span>jane.doe@gmail.com</span>
+                            <span>1234567891</span>
+                            <span>456 Dorm Ave, Town</span>
+                        </div>
+                        <div class="table-row" data-username="student3">
+                            <span>student3</span>
+                            <span>John Smith</span>
+                            <span>103</span>
+                            <span>C3</span>
+                            <span>9876543212</span>
+                            <span>john.smith@gmail.com</span>
+                            <span>1234567892</span>
+                            <span>789 Campus Rd, Village</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warden Leaves Tab -->
+                <div id="warden-leaves" class="tab-content">
+                    <h3>Pending Leaves</h3>
+                    <div class="list-box">
+                        <!-- Sample pending leave (replace with dynamic data from backend) -->
+                        <div class="list-item" data-leave-id="1">
+                            <span>ID: 1 | Student: student1 | Days: 3 | Reason: Family emergency | Applied: 2024-07-20</span>
+                        </div>
+                        <div class="list-item" data-leave-id="2">
+                            <span>ID: 2 | Student: student2 | Days: 5 | Reason: Medical appointment | Applied: 2024-07-21</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn success-btn" onclick="simulateApproveLeave()"><i class="fas fa-check-circle"></i> Approve Selected</button>
+                        <button class="btn danger-btn" onclick="simulateRejectLeave()"><i class="fas fa-times-circle"></i> Reject Selected</button>
+                    </div>
+                    <h3>All Leave History</h3>
+                    <div class="data-table">
+                        <!-- Table header -->
+                        <div class="table-header">
+                            <span>ID</span>
+                            <span>Student</span>
+                            <span>Days</span>
+                            <span>Reason</span>
+                            <span>Status</span>
+                            <span>Applied At</span>
+                        </div>
+                        <!-- Sample leave history (replace with dynamic data from backend) -->
+                        <div class="table-row">
+                            <span>1</span>
+                            <span>student1</span>
+                            <span>3</span>
+                            <span>Family emergency</span>
+                            <span class="status pending">Pending</span>
+                            <span>2024-07-20 10:00:00</span>
+                        </div>
+                        <div class="table-row">
+                            <span>3</span>
+                            <span>student3</span>
+                            <span>2</span>
+                            <span>Personal travel</span>
+                            <span class="status approved">Approved</span>
+                            <span>2024-07-18 09:30:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warden Mess Payments Tab -->
+                <div id="warden-mess" class="tab-content">
+                    <h3>Mess Payments</h3>
+                    <div class="action-buttons">
+                        <button class="btn primary-btn" onclick="showAddPaymentModal()"><i class="fas fa-plus"></i> Add Payment</button>
+                    </div>
+                    <div class="data-table">
+                        <!-- Table header -->
+                        <div class="table-header">
+                            <span>ID</span>
+                            <span>Student</span>
+                            <span>Amount</span>
+                            <span>Note</span>
+                            <span>Paid At</span>
+                        </div>
+                        <!-- Sample mess payments (replace with dynamic data from backend) -->
+                        <div class="table-row">
+                            <span>101</span>
+                            <span>student1</span>
+                            <span>1500.00</span>
+                            <span>Monthly fee</span>
+                            <span>2024-07-01 12:00:00</span>
+                        </div>
+                        <div class="table-row">
+                            <span>102</span>
+                            <span>student2</span>
+                            <span>750.00</span>
+                            <span>Half month</span>
+                            <span>2024-07-15 11:30:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard (Hidden by default) -->
+        <div id="student-dashboard" class="page">
+            <header class="dashboard-header">
+                <h2>Student Dashboard <span id="student-username"></span></h2>
+                <nav class="dashboard-nav">
+                    <button class="nav-item active" data-target="student-profile">My Profile</button>
+                    <button class="nav-item" data-target="student-leaves">Leaves</button>
+                    <button class="nav-item" data-target="student-mess">Mess Payments</button>
+                    <button class="nav-item" onclick="simulateLogout()">Logout</button>
+                </nav>
+            </header>
+            <div class="dashboard-content">
+                <!-- Student Profile Tab -->
+                <div id="student-profile" class="tab-content active">
+                    <h3>My Profile</h3>
+                    <div class="profile-details">
+                        <p><strong>Username:</strong> <span id="profile-username">student1</span></p>
+                        <p><strong>Name:</strong> <span id="profile-name">Student One</span></p>
+                        <p><strong>Roll:</strong> <span id="profile-roll">101</span></p>
+                        <p><strong>Room:</strong> <span id="profile-room">A1</span></p>
+                        <p><strong>Contact:</strong> <span id="profile-contact">9876543210</span></p>
+                        <p><strong>Email:</strong> <span id="profile-email">student1@gmail.com</span></p>
+                        <p><strong>Parent's Phone:</strong> <span id="profile-parent-phone">1234567890</span></p>
+                        <p><strong>Address:</strong> <span id="profile-address">123 Hostel St, City</span></p>
+                    </div>
+                    <button class="btn warning-btn mt-4" onclick="showEditStudentModal('student-profile')"><i class="fas fa-edit"></i> Edit Profile</button>
+                </div>
+
+                <!-- Student Leaves Tab -->
+                <div id="student-leaves" class="tab-content">
+                    <h3>My Leaves</h3>
+                    <div class="action-buttons">
+                        <button class="btn primary-btn" onclick="showApplyLeaveModal()"><i class="fas fa-calendar-plus"></i> Apply Leave</button>
+                    </div>
+                    <div class="list-box">
+                        <!-- Sample leave (replace with dynamic data from backend) -->
+                        <div class="list-item">
+                            <span>ID: 1 | Days: 3 | Reason: Family emergency | Status: <span class="status pending">Pending</span> | Applied: 2024-07-20</span>
+                        </div>
+                        <div class="list-item">
+                            <span>ID: 3 | Days: 2 | Reason: Personal travel | Status: <span class="status approved">Approved</span> | Applied: 2024-07-18</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Mess Payments Tab -->
+                <div id="student-mess" class="tab-content">
+                    <h3>My Mess Payments</h3>
+                    <div class="data-table">
+                        <!-- Table header -->
+                        <div class="table-header">
+                            <span>ID</span>
+                            <span>Amount</span>
+                            <span>Note</span>
+                            <span>Paid At</span>
+                        </div>
+                        <!-- Sample payments (replace with dynamic data from backend) -->
+                        <div class="table-row">
+                            <span>101</span>
+                            <span>1500.00</span>
+                            <span>Monthly fee</span>
+                            <span>2024-07-01 12:00:00</span>
+                        </div>
+                        <div class="table-row">
+                            <span>103</span>
+                            <span>500.00</span>
+                            <span>Extra meal</span>
+                            <span>2024-07-10 18:00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals (Hidden by default) -->
+
+    <!-- Add/Edit Student Modal -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="student-modal-title">Add New Student</h3>
+            <div class="input-group">
+                <label for="student-username-modal">Username:</label>
+                <input type="text" id="student-username-modal" placeholder="Student's username" required>
+            </div>
+            <div class="input-group">
+                <label for="student-name-modal">Full Name:</label>
+                <input type="text" id="student-name-modal" placeholder="Full name" required>
+            </div>
+            <div class="input-group">
+                <label for="student-roll-modal">Roll Number:</label>
+                <input type="text" id="student-roll-modal" placeholder="Roll number" required>
+            </div>
+            <div class="input-group">
+                <label for="student-room-modal">Room Number:</label>
+                <input type="text" id="student-room-modal" placeholder="Room number" required>
+            </div>
+            <div class="input-group">
+                <label for="student-contact-modal">Contact Number:</label>
+                <input type="tel" id="student-contact-modal" placeholder="Contact number" required>
+            </div>
+            <div class="input-group">
+                <label for="student-email-modal">Email (Gmail):</label>
+                <input type="email" id="student-email-modal" placeholder="Gmail address" required>
+            </div>
+            <div class="input-group">
+                <label for="student-parent-phone-modal">Parent's Phone Number:</label>
+                <input type="tel" id="student-parent-phone-modal" placeholder="Parent's contact" required>
+            </div>
+            <div class="input-group">
+                <label for="student-address-modal">Address:</label>
+                <textarea id="student-address-modal" placeholder="Full residential address" rows="3" required></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn secondary-btn" onclick="hideModal('student-modal')">Cancel</button>
+                <button class="btn primary-btn" id="student-modal-save-btn" onclick="simulateSaveStudent()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Mess Payment Modal -->
+    <div id="add-payment-modal" class="modal">
+        <div class="modal-content">
+            <h3>Record New Mess Payment</h3>
+            <div class="input-group">
+                <label for="payment-student-username">Student Username:</label>
+                <input type="text" id="payment-student-username" placeholder="Username of student" required>
+            </div>
+            <div class="input-group">
+                <label for="payment-amount">Amount (₹):</label>
+                <input type="number" id="payment-amount" placeholder="e.g., 1500.00" step="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="payment-note">Note:</label>
+                <textarea id="payment-note" placeholder="e.g., Monthly fees, Extra meal" rows="2"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn secondary-btn" onclick="hideModal('add-payment-modal')">Cancel</button>
+                <button class="btn primary-btn" onclick="simulateAddPayment()">Record Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apply Leave Modal (for students) -->
+    <div id="apply-leave-modal" class="modal">
+        <div class="modal-content">
+            <h3>Apply for Leave</h3>
+            <div class="input-group">
+                <label for="leave-days">Number of Days:</label>
+                <input type="number" id="leave-days" placeholder="e.g., 3" min="1" required>
+            </div>
+            <div class="input-group">
+                <label for="leave-reason">Reason for Leave:</label>
+                <textarea id="leave-reason" placeholder="Briefly explain your reason" rows="3" required></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn secondary-btn" onclick="hideModal('apply-leave-modal')">Cancel</button>
+                <button class="btn primary-btn" onclick="simulateApplyLeave()">Submit Application</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Global state for demonstration (NOT for production)
+        let currentUser = null; // Stores {username, role}
+        let isFirstLogin = true; // Simulates first login experience
+
+        // Utility to switch pages
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Utility to show/hide modals
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showLoginPage() {
+            showPage('login-page');
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            currentUser = null;
+        }
+
+        function showRegistrationPage() {
+            showPage('registration-page');
+            document.getElementById('reg-username').value = '';
+            document.getElementById('reg-password').value = '';
+            document.getElementById('reg-role').value = 'student';
+        }
+
+        // --- Login Simulation ---
+        function simulateLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            // Simplified backend check
+            if (username === 'warden' && password === '1234') {
+                currentUser = { username: 'warden', role: 'warden' };
+                showWardenDashboard();
+            } else if (username === 'student1' && password === '1111') {
+                currentUser = { username: 'student1', role: 'student' };
+                // Simulate first login for student1 only for demonstration
+                if (isFirstLogin && username === 'student1') {
+                    showStudentProfileSetupPage();
+                    isFirstLogin = false; // Set to false after first simulated login
+                } else {
+                    showStudentDashboard();
+                }
+            } else if (username && password) {
+                // If not default, assume new user or incorrect credentials
+                alert('Invalid credentials. For demo, use warden/1234 or student1/1111. Or register a new user.');
+            } else {
+                alert('Please enter username and password.');
+            }
+        }
+
+        // --- Registration Simulation ---
+        function simulateRegister() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const role = document.getElementById('reg-role').value;
+
+            if (!username || !password) {
+                alert('Username and password are required for registration.');
+                return;
+            }
+
+            // In a real app: Send data to backend to create user
+            alert(`User '${username}' registered as ${role}. (Simulated)`);
+            currentUser = { username, role }; // Set as current user
+            if (role === 'student') {
+                showStudentProfileSetupPage(); // New student must complete profile
+            } else {
+                showLoginPage(); // Warden registration goes back to login
+            }
+        }
+
+        // --- Student Profile Setup Simulation ---
+        function showStudentProfileSetupPage() {
+            showPage('student-profile-setup-page');
+            // Pre-fill if needed, e.g., if coming from registration with some info
+            document.getElementById('setup-name').value = '';
+            document.getElementById('setup-roll').value = '';
+            document.getElementById('setup-room').value = '';
+            document.getElementById('setup-gmail').value = '';
+            document.getElementById('setup-phone').value = '';
+            document.getElementById('setup-parent-phone').value = '';
+            document.getElementById('setup-address').value = '';
+        }
+
+        function simulateProfileSetup() {
+            const name = document.getElementById('setup-name').value;
+            const roll = document.getElementById('setup-roll').value;
+            const room = document.getElementById('setup-room').value;
+            const gmail = document.getElementById('setup-gmail').value;
+            const phone = document.getElementById('setup-phone').value;
+            const parentPhone = document.getElementById('setup-parent-phone').value;
+            const address = document.getElementById('setup-address').value;
+
+            if (!name || !roll || !room || !gmail || !phone || !parentPhone || !address) {
+                alert('Please fill in all profile details.');
+                return;
+            }
+
+            // In a real app: Send data to backend to save student profile
+            alert(`Student profile for ${currentUser.username} saved! (Simulated)`);
+            showStudentDashboard(); // Go to dashboard after setup
+        }
+
+        // --- Dashboard Navigation & Logout ---
+        function showWardenDashboard() {
+            showPage('warden-dashboard');
+            document.getElementById('warden-username').textContent = `(${currentUser.username})`;
+            // Activate default tab
+            document.querySelectorAll('#warden-dashboard .nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelector('#warden-dashboard .nav-item[data-target="warden-students"]').classList.add('active');
+            document.querySelectorAll('#warden-dashboard .tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('warden-students').classList.add('active');
+        }
+
+        function showStudentDashboard() {
+            showPage('student-dashboard');
+            document.getElementById('student-username').textContent = `(${currentUser.username})`;
+            // Activate default tab and update profile info (simulated)
+            document.querySelectorAll('#student-dashboard .nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelector('#student-dashboard .nav-item[data-target="student-profile"]').classList.add('active');
+            document.querySelectorAll('#student-dashboard .tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('student-profile').classList.add('active');
+
+            // Simulate loading profile data
+            document.getElementById('profile-username').textContent = currentUser.username;
+            document.getElementById('profile-name').textContent = document.getElementById('setup-name').value || 'Student One'; // Use setup name if available
+            document.getElementById('profile-roll').textContent = document.getElementById('setup-roll').value || '101';
+            document.getElementById('profile-room').textContent = document.getElementById('setup-room').value || 'A1';
+            document.getElementById('profile-contact').textContent = document.getElementById('setup-phone').value || '9876543210';
+            document.getElementById('profile-email').textContent = document.getElementById('setup-gmail').value || 'student1@gmail.com';
+            document.getElementById('profile-parent-phone').textContent = document.getElementById('setup-parent-phone').value || '1234567890';
+            document.getElementById('profile-address').textContent = document.getElementById('setup-address').value || '123 Hostel St, City';
+
+        }
+
+        function simulateLogout() {
+            currentUser = null;
+            isFirstLogin = true; // Reset for demo
+            showLoginPage();
+        }
+
+        // Tab switching functionality for Dashboards
+        document.querySelectorAll('.dashboard-nav .nav-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const parentDashboard = this.closest('.page');
+
+                parentDashboard.querySelectorAll('.dashboard-nav .nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                parentDashboard.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // --- Warden Actions (Simulated) ---
+
+        let currentEditingUsername = null; // To store which student is being edited
+
+        function showAddStudentModal() {
+            document.getElementById('student-modal-title').textContent = 'Add New Student';
+            document.getElementById('student-username-modal').value = '';
+            document.getElementById('student-username-modal').disabled = false; // Enable for new student
+            document.getElementById('student-name-modal').value = '';
+            document.getElementById('student-roll-modal').value = '';
+            document.getElementById('student-room-modal').value = '';
+            document.getElementById('student-contact-modal').value = '';
+            document.getElementById('student-email-modal').value = '';
+            document.getElementById('student-parent-phone-modal').value = '';
+            document.getElementById('student-address-modal').value = '';
+            currentEditingUsername = null; // Clear editing state
+            showModal('student-modal');
+        }
+
+        function showEditStudentModal(source = 'warden') {
+            let selectedUsername = '';
+            if (source === 'warden') {
+                const selectedRow = document.querySelector('#warden-students .table-row.selected'); // Assuming a way to select
+                if (!selectedRow) {
+                    alert('Please select a student from the list to edit.');
+                    return;
+                }
+                selectedUsername = selectedRow.dataset.username;
+                // Simulate fetching data for the selected student
+                const studentData = { // This would come from backend in real app
+                    username: selectedUsername,
+                    name: selectedRow.children[1].textContent,
+                    roll: selectedRow.children[2].textContent,
+                    room: selectedRow.children[3].textContent,
+                    contact: selectedRow.children[4].textContent,
+                    email: selectedRow.children[5].textContent,
+                    parentPhone: selectedRow.children[6].textContent,
+                    address: selectedRow.children[7].textContent
+                };
+                document.getElementById('student-username-modal').value = studentData.username;
+                document.getElementById('student-username-modal').disabled = true; // Cannot change username
+                document.getElementById('student-name-modal').value = studentData.name;
+                document.getElementById('student-roll-modal').value = studentData.roll;
+                document.getElementById('student-room-modal').value = studentData.room;
+                document.getElementById('student-contact-modal').value = studentData.contact;
+                document.getElementById('student-email-modal').value = studentData.email;
+                document.getElementById('student-parent-phone-modal').value = studentData.parentPhone;
+                document.getElementById('student-address-modal').value = studentData.address;
+            } else if (source === 'student-profile' && currentUser) {
+                // For student editing their own profile
+                selectedUsername = currentUser.username;
+                document.getElementById('student-username-modal').value = currentUser.username;
+                document.getElementById('student-username-modal').disabled = true;
+                // Simulate loading current user's profile data
+                document.getElementById('student-name-modal').value = document.getElementById('profile-name').textContent;
+                document.getElementById('student-roll-modal').value = document.getElementById('profile-roll').textContent;
+                document.getElementById('student-room-modal').value = document.getElementById('profile-room').textContent;
+                document.getElementById('student-contact-modal').value = document.getElementById('profile-contact').textContent;
+                document.getElementById('student-email-modal').value = document.getElementById('profile-email').textContent;
+                document.getElementById('student-parent-phone-modal').value = document.getElementById('profile-parent-phone').textContent;
+                document.getElementById('student-address-modal').value = document.getElementById('profile-address').textContent;
+            }
+
+            document.getElementById('student-modal-title').textContent = `Edit Student: ${selectedUsername}`;
+            currentEditingUsername = selectedUsername;
+            showModal('student-modal');
+        }
+
+        function simulateSaveStudent() {
+            const username = document.getElementById('student-username-modal').value;
+            const name = document.getElementById('student-name-modal').value;
+            const roll = document.getElementById('student-roll-modal').value;
+            const room = document.getElementById('student-room-modal').value;
+            const contact = document.getElementById('student-contact-modal').value;
+            const email = document.getElementById('student-email-modal').value;
+            const parentPhone = document.getElementById('student-parent-phone-modal').value;
+            const address = document.getElementById('student-address-modal').value;
+
+            if (!username || !name || !roll || !room || !contact || !email || !parentPhone || !address) {
+                alert('All student fields are required.');
+                return;
+            }
+
+            if (currentEditingUsername) {
+                alert(`Student ${username} updated! (Simulated)`);
+            } else {
+                alert(`New student ${username} added! (Simulated)`);
+            }
+            hideModal('student-modal');
+            // In a real app: Refresh student list or profile data from backend
+        }
+
+        function simulateDeleteStudent() {
+            const selectedRow = document.querySelector('#warden-students .table-row.selected');
+            if (!selectedRow) {
+                alert('Please select a student from the list to delete.');
+                return;
+            }
+            const usernameToDelete = selectedRow.dataset.username;
+            if (confirm(`Are you sure you want to delete student ${usernameToDelete} and all their records?`)) {
+                alert(`Student ${usernameToDelete} deleted! (Simulated)`);
+                // In a real app: Send delete request to backend and remove row from DOM
+                selectedRow.remove(); // Visual removal for demo
+            }
+        }
+
+        function showAddPaymentModal() {
+            document.getElementById('payment-student-username').value = '';
+            document.getElementById('payment-amount').value = '';
+            document.getElementById('payment-note').value = '';
+            showModal('add-payment-modal');
+        }
+
+        function simulateAddPayment() {
+            const studentUsername = document.getElementById('payment-student-username').value;
+            const amount = document.getElementById('payment-amount').value;
+            const note = document.getElementById('payment-note').value;
+
+            if (!studentUsername || !amount) {
+                alert('Student username and amount are required.');
+                return;
+            }
+
+            alert(`Payment of ₹${amount} recorded for ${studentUsername}! (Simulated)`);
+            hideModal('add-payment-modal');
+            // In a real app: Refresh mess payments list from backend
+        }
+
+        function showApplyLeaveModal() {
+            document.getElementById('leave-days').value = '';
+            document.getElementById('leave-reason').value = '';
+            showModal('apply-leave-modal');
+        }
+
+        function simulateApplyLeave() {
+            const days = document.getElementById('leave-days').value;
+            const reason = document.getElementById('leave-reason').value;
+
+            if (!days || !reason) {
+                alert('Number of days and reason are required for leave application.');
+                return;
+            }
+
+            alert(`Leave for ${days} days submitted for ${currentUser.username}! (Simulated)`);
+            hideModal('apply-leave-modal');
+            // In a real app: Refresh student's leave list from backend
+        }
+
+        function simulateApproveLeave() {
+            const selectedItem = document.querySelector('#warden-leaves .list-item.selected');
+            if (!selectedItem) {
+                alert('Please select a leave request to approve.');
+                return;
+            }
+            const leaveId = selectedItem.dataset.leaveId;
+            alert(`Leave request ID ${leaveId} approved! (Simulated)`);
+            // In a real app: Send approval request to backend and update UI
+        }
+
+        function simulateRejectLeave() {
+            const selectedItem = document.querySelector('#warden-leaves .list-item.selected');
+            if (!selectedItem) {
+                alert('Please select a leave request to reject.');
+                return;
+            }
+            const leaveId = selectedItem.dataset.leaveId;
+            alert(`Leave request ID ${leaveId} rejected! (Simulated)`);
+            // In a real app: Send rejection request to backend and update UI
+        }
+
+
+        // Event listener for selecting table rows (for edit/delete)
+        document.addEventListener('click', function(event) {
+            const tableRow = event.target.closest('.data-table .table-row');
+            if (tableRow) {
+                // Deselect all other rows in the same table
+                const parentTable = tableRow.closest('.data-table');
+                if (parentTable) {
+                    parentTable.querySelectorAll('.table-row').forEach(row => {
+                        row.classList.remove('selected');
+                    });
+                }
+                // Select the clicked row
+                tableRow.classList.add('selected');
+            }
+
+            const listItem = event.target.closest('.list-box .list-item');
+            if (listItem) {
+                // Deselect all other list items in the same list box
+                const parentListBox = listItem.closest('.list-box');
+                if (parentListBox) {
+                    parentListBox.querySelectorAll('.list-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                }
+                // Select the clicked list item
+                listItem.classList.add('selected');
+            }
+        });
+
+    </script>
+</body>
+</html>

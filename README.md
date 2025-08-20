@@ -3,7 +3,7 @@
 ## 📌 Overview
 The **Hostel Management System** is a responsive, browser-based application designed for managing hostel operations. 
 It provides dedicated dashboards for both **wardens** and **students**, allowing smooth management of profiles, room allocations, leave requests, and mess payments.  
-This system is implemented using **HTML**, **CSS**, and **JavaScript** (front-end simulation only — no backend integration).  
+This system is implemented using **HTML**, **CSS**(front-end simulation only — no backend integration).  
 
 ---
 
@@ -28,11 +28,9 @@ This system is implemented using **HTML**, **CSS**, and **JavaScript** (front-en
 ---
 
 ## 🛠️ Tech Stack
-- **HTML5** – Page structure and UI components.
-- **CSS3** – Styling with responsive design.
-- **JavaScript (Vanilla)** – Dynamic page switching, modal handling, and simulated data updates.
-- **Font Awesome** – Icons for better UI/UX.
-- **Google Fonts (Poppins)** – Modern typography.
+- **HTML** – Page structure and UI components.
+- **CSS** – Styling with responsive design.
+- **Font Awesome** – Icons for better U
 
 ---
 
@@ -69,6 +67,7 @@ This system is implemented using **HTML**, **CSS**, and **JavaScript** (front-en
 - CSV export and data persistence require backend integration.
 
 ---
+
 
 ## 💡 Future Improvements
 - Connect to a backend (Node.js, PHP, Django, etc.) for real data storage.

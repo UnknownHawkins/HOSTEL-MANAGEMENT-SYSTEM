@@ -47,8 +47,8 @@ This system is implemented using **HTML**, **CSS**, and **JavaScript** (front-en
 
 ## 🔑 Default Demo Login Credentials
 - **Warden**
-  - Username: `warden`
-  - Password: `1234`
+  - Username: `Warden`
+  - Password: `12345678901234`
 - **Student**
   - Username: `student1`
   - Password: `1111`

@@ -199,7 +199,7 @@ HOSTEL-MANAGEMENT-SYSTEM/
 
 To ensure high developer onboarding speed and offline capability, the platform integrates robust local fallbacks:
 * **In-Memory Cache (Redis Fallback):** If `REDIS_URL` is omitted or empty, the application automatically falls back to an internal high-fidelity mock implementation. This mock replicates key caching operations using a local JavaScript Map structure.
-* **Mock Gemini AI Gateway:** If `GEMINI_API_KEY` is not provided or fails initialization, the AI Assistant and Leave Risk Analyzer automatically utilize a contextual mock model generator, providing mock replies.
+* **Mock Gemini AI Gateway:** If `GEMINI_API_KEY` is not provided or fails initialization, the AI Assistant and Leave Risk Analyzer automatically utilize a contextual mock model generator, providing mock replies
 
 ---
 

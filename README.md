@@ -1,4 +1,4 @@
-# 🏨 EHMS — Enterprise Hostel Management System
+# 🏨 HMS — Hostel Management System
 
 <div align="center">
 

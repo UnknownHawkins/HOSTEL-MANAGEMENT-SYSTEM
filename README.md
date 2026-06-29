@@ -203,6 +203,23 @@ To ensure high developer onboarding speed and offline capability, the platform i
 
 ---
 
+## 🛠️ Quick Diagnostics & Verification
+
+You can quickly verify that your database and environment settings are running correctly:
+1. **Verify Database Connectivity:**
+   ```bash
+   cd backend
+   npx prisma db pull --print
+   ```
+   *If successful, this will query and output your database schema directly from the cloud instance.*
+2. **Verify Server Boot Uptime:**
+   ```bash
+   npm run dev
+   ```
+   *Check for connection confirmations in the terminal logs.*
+
+---
+
 ## 📄 License
 
 GNU General Public License v3.0 (GPL-3.0) — Anyone can use, modify, and distribute this software, but all derivative works must remain open-source under the same GPL-3.0 license. Proprietary or closed-source usage is not permitted without explicit paperwork or written permission.

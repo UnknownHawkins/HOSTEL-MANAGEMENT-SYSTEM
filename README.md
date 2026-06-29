@@ -34,7 +34,7 @@ The application implements a strict Role-Based Access Control (RBAC) workflow pa
 * **Dashboard:** Warden-specific summaries listing pending leave counts, open maintenance issues, active visitor counters, and current building occupancy bars.
 * **Student Directory:** View registered students, filter by floor/building, and view details.
 * **Room Allocation:** Interactive grid showing all rooms and beds. Allows assigning vacant beds to students with a visual floor-by-floor allocation UI.
-* **Visitor Tracking:** Register new visitors directly, verify entry status, and checkout active visitors to historical log records.
+* **Visitor Tracking:** Register new visitors directly, verify entry status, and Checkout active visitors to historical log records.
 * **Leave & Complaint Management:** Review leave requests with approval comments and track/update complaint states (*Open* ➔ *In Progress* ➔ *Resolved*).
 * **Attendance:** Mark present/absent logs daily with a calendar view.
 * **Fee Auditing:** Monitor and verify all transactions and billing reports.

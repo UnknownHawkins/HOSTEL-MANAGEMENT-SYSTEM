@@ -1,0 +1,419 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User role configurations (RBAC)
+model User {
+  id               Int           @id @default(autoincrement())
+  username         String        @unique
+  email            String        @unique
+  passwordHash     String
+  isEmailVerified  Boolean       @default(false)
+  roleId           Int
+  role             Role          @relation(fields: [roleId], references: [id])
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  
+  // Relations
+  studentProfile   Student?
+  wardenProfile    Warden?
+  adminProfile     Admin?
+  sessions         Session[]
+  auditLogs        AuditLog[]
+  activityLogs     ActivityLog[]
+  notifications    Notification[]
+  documents        Document[]
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique // e.g., SUPER_ADMIN, ADMIN, WARDEN, STUDENT
+  description String?
+  users       User[]
+  permissions Permission[] @relation("RolePermissions")
+}
+
+model Permission {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique // e.g., MANAGE_ROOMS, VIEW_LEAVES, etc.
+  description String?
+  roles       Role[]  @relation("RolePermissions")
+}
+
+// Entity Profiles
+model Student {
+  id             Int              @id @default(autoincrement())
+  userId         Int              @unique
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNo         String           @unique
+  parentPhone    String
+  address        String
+  idCardUrl      String?
+  medicalCertUrl String?
+  isFirstLogin   Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Current Room Allocation relation
+  roomId         Int?
+  bedId          Int?
+  room           Room?            @relation(fields: [roomId], references: [id])
+  bed            Bed?             @relation(fields: [bedId], references: [id])
+
+  // Relations
+  allocations    RoomAllocation[]
+  leaveRequests  LeaveRequest[]
+  complaints     Complaint[]
+  visitors       Visitor[]
+  attendance     Attendance[]
+  payments       Payment[]
+}
+
+model Warden {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hostelId  Int?
+  hostel    Hostel?  @relation(fields: [hostelId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Physical infrastructure hierarchy
+model Hostel {
+  id        Int        @id @default(autoincrement())
+  name      String
+  code      String     @unique
+  address   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  // Relations
+  buildings Building[]
+  wardens   Warden[]
+}
+
+model Building {
+  id        Int      @id @default(autoincrement())
+  name      String
+  hostelId  Int
+  hostel    Hostel   @relation(fields: [hostelId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  floors    Floor[]
+}
+
+model Floor {
+  id         Int      @id @default(autoincrement())
+  number     Int
+  buildingId Int
+  building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  rooms      Room[]
+}
+
+enum RoomType {
+  AC
+  NON_AC
+}
+
+model Room {
+  id          Int              @id @default(autoincrement())
+  number      String
+  type        RoomType         @default(NON_AC)
+  capacity    Int
+  price       Float
+  floorId     Int
+  floor       Floor            @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relations
+  beds         Bed[]
+  students     Student[]
+  allocations  RoomAllocation[]
+  maintenances Maintenance[]
+}
+
+model Bed {
+  id         Int      @id @default(autoincrement())
+  number     String
+  roomId     Int
+  room       Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  isOccupied Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  students    Student[]
+  allocations RoomAllocation[]
+}
+
+// Room allocation tracker
+enum AllocationStatus {
+  ALLOCATED
+  TRANSFERRED
+  VACATED
+}
+
+model RoomAllocation {
+  id          Int              @id @default(autoincrement())
+  studentId   Int
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  roomId      Int
+  room        Room             @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  bedId       Int
+  bed         Bed              @relation(fields: [bedId], references: [id], onDelete: Cascade)
+  allocatedBy Int
+  allocatedAt DateTime         @default(now())
+  status      AllocationStatus @default(ALLOCATED)
+  vacatedAt   DateTime?
+  notes       String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+// Leave system
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model LeaveRequest {
+  id            Int         @id @default(autoincrement())
+  studentId     Int
+  student       Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  days          Int
+  reason        String
+  startDate     DateTime
+  endDate       DateTime
+  documentUrl   String?
+  status        LeaveStatus @default(PENDING)
+  wardenComment String?
+  approvedBy    Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// Complaint tracking
+enum ComplaintStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model Complaint {
+  id              Int             @id @default(autoincrement())
+  studentId       Int
+  student         Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  category        String
+  imageUrl        String?
+  status          ComplaintStatus @default(OPEN)
+  assignedStaff   String?
+  resolutionNotes String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+// Maintenance jobs
+enum MaintenancePriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Maintenance {
+  id          Int                 @id @default(autoincrement())
+  roomId      Int
+  room        Room                @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  description String
+  priority    MaintenancePriority @default(MEDIUM)
+  status      MaintenanceStatus   @default(PENDING)
+  assignedTo  String?
+  cost        Float?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+// Visitors
+enum VisitorStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Visitor {
+  id            Int           @id @default(autoincrement())
+  name          String
+  contactNo     String
+  purpose       String
+  studentId     Int
+  student       Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  otp           String?
+  isOtpVerified Boolean       @default(false)
+  qrCode        String?
+  entryTime     DateTime?
+  exitTime      DateTime?
+  status        VisitorStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+// Notices & announcements
+enum NoticeTarget {
+  ALL
+  STUDENTS
+  WARDENS
+}
+
+model Notice {
+  id             Int          @id @default(autoincrement())
+  title          String
+  content        String
+  targetAudience NoticeTarget @default(ALL)
+  createdBy      Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+// Attendance
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LEAVE
+}
+
+model Attendance {
+  id        Int              @id @default(autoincrement())
+  studentId Int
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  date      DateTime         @default(now())
+  status    AttendanceStatus @default(PRESENT)
+  markedBy  Int
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+// Payments
+enum PaymentType {
+  FEES
+  MESS
+  ELECTRICITY
+  FINE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Payment {
+  id            Int           @id @default(autoincrement())
+  studentId     Int
+  student       Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type          PaymentType
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  provider      String?       // STRIPE, RAZORPAY
+  transactionId String?       @unique
+  receiptUrl    String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id              Int      @id @default(autoincrement())
+  paymentId       Int
+  payment         Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  amount          Float
+  status          String
+  provider        String
+  transactionId   String
+  responsePayload String?
+  createdAt       DateTime @default(now())
+}
+
+// General uploaded files
+model Document {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String
+  type      String   // ID_CARD, MEDICAL, PAYMENT_RECEIPT, COMPLAINT
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// Notifications
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  type      String   // LEAVE, COMPLAINT, PAYMENT, NOTICE, ROOM_ALLOCATION
+  createdAt DateTime @default(now())
+}
+
+// System Logs
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String   // e.g., UPDATE_USER, DELETE_STUDENT
+  details   String
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  details   String
+  createdAt DateTime @default(now())
+}
+
+// Active Sessions
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  device    String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
